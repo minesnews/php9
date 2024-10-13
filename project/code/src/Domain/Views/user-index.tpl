@@ -28,7 +28,7 @@
               </td>
               {% if isAdmin %}
                 <td scope="col"><a href="/user/edit/?id_user={{ user.getUserId }}" >Редактирование</a></td>>
-                <td scope="col"><button type="button"  onClick="delete({{ user.getUserId() }})">Удалить</button></td>>
+                <td scope="col"><button type="button"  onClick="functDelete({{ user.getUserId() }})">Удалить</button></td>>
                 
               {% endif %}
             </tr>
@@ -39,7 +39,7 @@
 
 <script>
 
-    function delete(userId) {
+    function functDelete(userId) {
         $.ajax({
             method: 'POST',
             url: "/user/delete/",
