@@ -21,3 +21,5 @@
   <td scope="col"><a href="/user/delete/?id_user={{ user.getUserId }}">Удаление</a></td>>
 {% endif %}
 ```
+
+Пока что редактирование ведет на форму создания пользователя user-form.tpl
