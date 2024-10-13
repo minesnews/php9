@@ -22,4 +22,47 @@
 {% endif %}
 ```
 
-Пока что редактирование ведет на форму создания пользователя user-form.tpl
+Редактирование ведет на форму создания пользователя user-form.tpl
+
+Создадим метод для удаления пользователя в классе UserController:
+
+```
+public function actionDelete(): string {
+  if(User::exists($_POST['id'])) {
+    User::deleteFromStorage($_POST['id']);
+    return $this->actionIndex();
+  }
+  else {
+    throw new Exception("Пользователь не существует");
+  }
+}
+```
+
+В классе User создаём недостающие методы deleteFromStorage и exists:
+
+```
+public static function deleteFromStorage(int $user_id) : void {
+  $sql = "DELETE FROM users WHERE id_user = :id_user";
+
+  $handler = Application::$storage->get()->prepare($sql);
+  $handler->execute(['id_user' => $user_id]);
+}
+
+public static function exists(int $id): bool{
+  $sql = "SELECT count(id_user) as user_count FROM users WHERE id_user = :id_user";
+
+  $handler = Application::$storage->get()->prepare($sql);
+  $handler->execute([
+    'id_user' => $id
+  ]);
+
+  $result = $handler->fetchAll();
+
+  if(count($result) > 0 && $result[0]['user_count'] > 0){
+    return true;
+  }
+  else{
+    return false;
+  }
+}
+```
