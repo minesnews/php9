@@ -22,6 +22,20 @@
 {% endif %}
 ```
 
+Также добавим функцию удаления с POST запросом:
+
+```
+function delete(userId) {
+  $.ajax({
+    method: 'POST',
+    url: "/user/delete/",
+    data: { id: userId}
+  }).done(function (response) {
+    document.getElementById("userId" + userId).remove();
+  });
+}
+```
+
 Редактирование ведет на форму создания пользователя user-form.tpl
 
 Создадим метод для удаления пользователя в классе UserController (для удаления пользователя в асинхронном режиме используем метод POST):
