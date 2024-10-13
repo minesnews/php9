@@ -66,3 +66,19 @@ public static function exists(int $id): bool{
   }
 }
 ```
+
+Не забываем, что удаление пользователя может делать только администратор, поэтому добавляем в классе UserController в массив actionsPermissions сточку: 
+
+```
+'actionDelete' => ['admin']
+```
+
+Итоговый массив:
+
+```
+protected array $actionsPermissions = [
+  'actionHash' => ['admin', 'some'],
+  'actionSave' => ['admin'],
+  'actionDelete' => ['admin']
+];
+```
