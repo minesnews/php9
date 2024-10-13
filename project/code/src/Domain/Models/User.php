@@ -130,6 +130,39 @@ class User {
         $this->userPassword = Auth::getPasswordHash($_POST['password']);
     }
 
+    public static function deleteFromStorage(int $user_id) : void {
+        $sql = "DELETE FROM users WHERE id_user = :id_user";
+
+        $handler = Application::$storage->get()->prepare($sql);
+        $handler->execute(['id_user' => $user_id]);
+    }
+
+    public static function exists(int $id): bool{
+        // $sql = "SELECT count(id_user) as user_count FROM users WHERE id_user = :id_user";
+
+        // $handler = Application::$storage->get()->prepare($sql);
+        // $handler->execute([
+        //     'id_user' => $id
+        // ]);
+
+        // $result = $handler->fetchAll();
+
+        // if(count($result) > 0 && $result[0]['user_count'] > 0){
+        //     return true;
+        // }
+        // else{
+        //     return false;
+        // }
+
+        $sql = "SELECT count(id_user) as user_count FROM users WHERE id_user = :id_user";
+        $handler = Application::$storage->get()->prepare($sql);
+        $handler->execute([
+            'id_user' => $id
+        ]);
+        $result = $handler->fetchAll();
+        return (count($result) > 0 && $result[0]['user_count'] > 0);
+    }
+
     public function saveToStorage(){
         $sql = "INSERT INTO users(user_name, user_lastname, user_birthday_timestamp, `login`, password_hash) VALUES (:user_name, :user_lastname, :user_birthday, :user_login, :user_password)";
 

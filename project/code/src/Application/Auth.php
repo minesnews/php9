@@ -8,11 +8,13 @@ class Auth {
     }
 
     public function proceedAuth(string $login, string $password): bool{
-
+        //echo self::getPasswordHash($login);
+        //echo self::getPasswordHash($password);
         if ($password == "")
         {
             return false;
         }
+
 
 
         $sql = "SELECT id_user, user_name, user_lastname, password_hash FROM users WHERE login = :login";

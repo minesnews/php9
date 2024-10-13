@@ -11,7 +11,8 @@ class UserController extends AbstractController {
 
     protected array $actionsPermissions = [
         'actionHash' => ['admin', 'some'],
-        'actionSave' => ['admin']
+        'actionSave' => ['admin'],
+        'actionDelete' => ['admin']
     ];
 
     public function actionIndex(): string {
@@ -41,6 +42,10 @@ class UserController extends AbstractController {
     public function actionIndexRefresh(){
         $limit = null;
         
+        // if(isset($_POST['test']) && ($_POST['test'] > 0)){
+        //     $limit = $_POST['test'];
+        // }
+
         if(isset($_POST['maxId']) && ($_POST['maxId'] > 0)){
             $limit = $_POST['maxId'];
         }
@@ -95,6 +100,17 @@ class UserController extends AbstractController {
         }
         else {
             throw new \Exception("Переданные данные некорректны");
+        }
+    }
+
+    public function actionDelete(): string {
+        if(User::exists($_POST['id'])) {
+             User::deleteFromStorage($_POST['id']);
+             $Controller = new PageController();
+             return $Controller->actionIndex();
+        }
+         else {
+             throw new \Exception("Пользователь не существует");
         }
     }
 

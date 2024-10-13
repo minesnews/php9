@@ -16,7 +16,7 @@
           </thead>
           <tbody>
             {% for user in users %}
-            <tr>       
+            <tr name = "testid id = "testid">       
               <td>{{ user.getUserId() }}</td>   
               <td>{{ user.getUserName() }}</td>
               <td>{{ user.getUserLastName() }}</td>
@@ -27,8 +27,9 @@
                   {% endif %}
               </td>
               {% if isAdmin %}
-                <td scope="col"><a href="/user/edit/?id_user={{ user.getUserId }}">Редактирование</a></td>>
-                <td scope="col"><a href="/user/delete/?id_user={{ user.getUserId }}">Удаление</a></td>>
+                <td scope="col"><a href="/user/edit/?id_user={{ user.getUserId }}" >Редактирование</a></td>>
+                <td scope="col"><button type="button"  onClick="delete({{ user.getUserId() }})">Удалить</button></td>>
+                
               {% endif %}
             </tr>
             {% endfor %}
@@ -37,8 +38,20 @@
       </div>
 
 <script>
+
+    function delete(userId) {
+        $.ajax({
+            method: 'POST',
+            url: "/user/delete/",
+            data: { id: userId}
+        }).done(function (response) {
+            document.getElementById("userId" + userId).remove();
+        });
+    }
+    
     let maxId = $('.table-responsive tbody tr:last-child td:first-child').html();
-  
+
+
     setInterval(function () {
       $.ajax({
           method: 'POST',
@@ -56,6 +69,7 @@
 
               row += "<td>" + users[k].id + "</td>";
               maxId = users[k].id;
+              
 
               row += "<td>" + users[k].username + "</td>";
               row += "<td>" + users[k].userlastname + "</td>";
@@ -63,7 +77,8 @@
 
               row += "</tr>";
 
-              $('.content-template tbody').append(row);
+              $('.content-template tbody').append(row); //remove(id);
+              
             }
             
           }
